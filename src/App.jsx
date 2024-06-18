@@ -83,20 +83,25 @@ function App() {
     });
   }
 
+  const ctxValue = {
+    items: shoppingCart.items,
+    addItemToCart: handleAddItemToCart
+  };
+
   return (
-    <CartContext.Provider value={shoppingCart}>
+    <CartContext.Provider value={ctxValue}>
       {/* Header-Komponente mit den aktuellen Einkaufswagen-Daten und der Funktion zum Aktualisieren der Artikelmenge */}
       <Header
         cart={shoppingCart}
         onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
       />
-      {/* Shop-Komponente mit der Funktion zum Hinzufügen von Artikeln zum Einkaufswagen */}
+      {/* Shop-Komponente */}
       <Shop>
         {/* Iteriere über die Dummy-Produkte und rendere für jedes Produkt eine Product-Komponente */}
         {DUMMY_PRODUCTS.map((product) => (
           <li key={product.id}>
-            {/* Übergibt alle Produkteigenschaften (name, price, description, etc.) und die onAddToCart-Funktion an die Product-Komponente */}
-            <Product {...product} onAddToCart={handleAddItemToCart} />
+            {/* Übergibt alle Produkteigenschaften (name, price, description, etc.) an die Product-Komponente */}
+            <Product {...product} />
           </li>
         ))}
       </Shop>
