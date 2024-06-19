@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context.jsx";
 
 // Definiere die Cart-Komponente
-export default function Cart({ onUpdateItemQuantity }) {
-  const { items } = useContext(CartContext);
+export default function Cart() {
+  const { items , updateItemQuantity  } = useContext(CartContext);
 
   // Berechne den Gesamtpreis der Artikel im Einkaufswagen
   const totalPrice = items.reduce(
@@ -33,13 +33,13 @@ export default function Cart({ onUpdateItemQuantity }) {
                 {/* Bereich für die Aktionen an den Einkaufswagenartikeln (Menge erhöhen/verringern) */}
                 <div className="cart-item-actions">
                   {/* Button zum Verringern der Menge */}
-                  <button onClick={() => onUpdateItemQuantity(item.id, -1)}>
+                  <button onClick={() => updateItemQuantity(item.id, -1)}>
                     -
                   </button>
                   {/* Anzeige der aktuellen Menge */}
                   <span>{item.quantity}</span>
                   {/* Button zum Erhöhen der Menge */}
-                  <button onClick={() => onUpdateItemQuantity(item.id, 1)}>
+                  <button onClick={() => updateItemQuantity(item.id, 1)}>
                     +
                   </button>
                 </div>
