@@ -24,6 +24,13 @@ export default function CartContextProvider({children}) {
 
   // Funktion zum Hinzufügen eines Artikels zum Einkaufswagen
   function handleAddItemToCart(id) {
+    shoppingCartDispatch({
+      // eine Aktion kann alles sein,  aber in den meisten Fällen ist es ein Objekt
+      // Eigenschaft, die angibt, welche Art von Änderung vorgenommen werden soll
+      type: 'ADD_ITEM' ,
+      // Payload sind zusätzliche Daten, die für die Zustandsänderung erforderlich sind und als weitere Eigenschaften hinzugefügt werden.
+      payload: id
+    });
     // Aktualisiere den Zustand des Einkaufswagens
     setShoppingCart((prevShoppingCart) => {
       const updatedItems = [...prevShoppingCart.items]; // Erstelle eine Kopie der vorhandenen Artikel im Einkaufswagen
