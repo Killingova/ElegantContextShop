@@ -1,4 +1,4 @@
-import { createContext , useState} from "react";
+import { createContext , useState , useReducer} from "react";
 import { DUMMY_PRODUCTS } from "../dummy-products.js";
 
 // Erstelle den CartContext mit einem Standardwert
@@ -8,7 +8,15 @@ export const CartContext = createContext({
     updateItemQuantity: () => {},
 });    //"CartContext" ist gross geschrieben, weil ein Object erzeugt wird!
 
+function shoppingCartReducer(state, action) {
+  return state;
+} 
+
 export default function CartContextProvider({children}) {
+  const [ shoppingCartState , shoppingCartDispatch] = useReducer(
+    shoppingCartReducer, 
+    {items: [], // Initialisiere den Einkaufswagen mit einem leeren Array 
+  });
       // Definiere den Zustand für den Einkaufswagen mit useState-Hook
   const [shoppingCart, setShoppingCart] = useState({
     items: [], // Initialisiere den Einkaufswagen mit einem leeren Array
@@ -83,7 +91,7 @@ export default function CartContextProvider({children}) {
   }
 
   const ctxValue = {
-    items: shoppingCart.items,
+    items: shoppingCartState.items,
     addItemToCart: handleAddItemToCart,
     updateItemQuantity: handleUpdateCartItemQuantity
   };
