@@ -26,7 +26,7 @@ const CartModal = forwardRef(function Modal(
     <dialog id="modal" ref={dialog}>
       <h2>{title}</h2>
       {/* Cart-Komponente, die die Artikel im Einkaufswagen anzeigt und die Funktion zum Aktualisieren der Artikelmenge erhält */}
-      <Cart/>
+      <Cart />
       <form method="dialog" id="modal-actions">
         {/* Aktionen (Buttons) des Modals, wie "Close" und "Checkout" */}
         {actions}

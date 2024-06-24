@@ -1,110 +1,92 @@
-import { createContext , useState , useReducer} from "react";
-import { DUMMY_PRODUCTS } from "../dummy-products.js";
+import { createContext, useState, useReducer } from 'react';
+import { DUMMY_PRODUCTS } from '../dummy-products.js';
 
 // Erstelle den CartContext mit einem Standardwert
 export const CartContext = createContext({
-    items: [] ,
-    addItemToCart: () => {},
-    updateItemQuantity: () => {},
-});    //"CartContext" ist gross geschrieben, weil ein Object erzeugt wird!
+  items: [],
+  addItemToCart: () => {},
+  updateItemQuantity: () => {},
+}); // "CartContext" ist groß geschrieben, weil ein Objekt erzeugt wird!
 
+// Der Reducer für den Einkaufswagen
 function shoppingCartReducer(state, action) {
-  return state;
-} 
+  if (action.type === 'ADD_ITEM') {
+    const updatedItems = [...state.items]; // Erstelle eine Kopie der vorhandenen Artikel im Einkaufswagen
+    const id = action.payload; // Hole die Produkt-ID aus der Aktion
 
-export default function CartContextProvider({children}) {
-  const [ shoppingCartState , shoppingCartDispatch] = useReducer(
-    shoppingCartReducer, 
-    {items: [], // Initialisiere den Einkaufswagen mit einem leeren Array 
-  });
-      // Definiere den Zustand für den Einkaufswagen mit useState-Hook
-  const [shoppingCart, setShoppingCart] = useState({
-    items: [], // Initialisiere den Einkaufswagen mit einem leeren Array
-  });
+    // Überprüfe, ob der Artikel bereits im Einkaufswagen ist
+    const existingCartItemIndex = updatedItems.findIndex(
+      (cartItem) => cartItem.id === id
+    );
+    const existingCartItem = updatedItems[existingCartItemIndex];
+
+    if (existingCartItem) {
+      // Wenn der Artikel bereits im Einkaufswagen ist, erhöhe die Menge
+      const updatedItem = {
+        ...existingCartItem,
+        quantity: existingCartItem.quantity + 1,
+      };
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+      // Wenn der Artikel noch nicht im Einkaufswagen ist, füge ihn hinzu
+      const product = DUMMY_PRODUCTS.find((product) => product.id === id);
+      updatedItems.push({
+        id: id,
+        name: product.title,
+        price: product.price,
+        quantity: 1,
+      });
+    }
+
+    // Gib den aktualisierten Zustand zurück
+    return {
+      items: updatedItems,
+    };
+  }
+  if (action.type === 'UPDATE_ITEM') {
+    // ...
+  }
+  if (action.type === 'DELETE_ITEM') {
+    // ...
+  }
+  return state;
+}
+
+export default function CartContextProvider({ children }) {
+  // Initialisiere den Einkaufswagenzustand mit useReducer
+  const [shoppingCartState, shoppingCartDispatch] = useReducer(
+    shoppingCartReducer,
+    {
+      items: [], // Initialisiere den Einkaufswagen mit einem leeren Array
+    }
+  );
 
   // Funktion zum Hinzufügen eines Artikels zum Einkaufswagen
   function handleAddItemToCart(id) {
     shoppingCartDispatch({
-      // eine Aktion kann alles sein,  aber in den meisten Fällen ist es ein Objekt
+      // eine Aktion kann alles sein, aber in den meisten Fällen ist es ein Objekt
       // Eigenschaft, die angibt, welche Art von Änderung vorgenommen werden soll
-      type: 'ADD_ITEM' ,
+      type: 'ADD_ITEM',
       // Payload sind zusätzliche Daten, die für die Zustandsänderung erforderlich sind und als weitere Eigenschaften hinzugefügt werden.
-      payload: id
-    });
-    // Aktualisiere den Zustand des Einkaufswagens
-    setShoppingCart((prevShoppingCart) => {
-      const updatedItems = [...prevShoppingCart.items]; // Erstelle eine Kopie der vorhandenen Artikel im Einkaufswagen
-
-      // Überprüfe, ob der Artikel bereits im Einkaufswagen ist
-      const existingCartItemIndex = updatedItems.findIndex(
-        (cartItem) => cartItem.id === id
-      );
-      const existingCartItem = updatedItems[existingCartItemIndex];
-
-      if (existingCartItem) {
-        // Wenn der Artikel bereits im Einkaufswagen ist, erhöhe die Menge
-        const updatedItem = {
-          ...existingCartItem,
-          quantity: existingCartItem.quantity + 1,
-        };
-        updatedItems[existingCartItemIndex] = updatedItem;
-      } else {
-        // Wenn der Artikel noch nicht im Einkaufswagen ist, füge ihn hinzu
-        const product = DUMMY_PRODUCTS.find((product) => product.id === id);
-        updatedItems.push({
-          id: id,
-          name: product.title,
-          price: product.price,
-          quantity: 1,
-        });
-      }
-
-      // Gib den aktualisierten Zustand zurück
-      return {
-        items: updatedItems,
-      };
+      payload: id,
     });
   }
 
   // Funktion zum Aktualisieren der Menge eines Artikels im Einkaufswagen
   function handleUpdateCartItemQuantity(productId, amount) {
-    // Aktualisiere den Zustand des Einkaufswagens
-    setShoppingCart((prevShoppingCart) => {
-      const updatedItems = [...prevShoppingCart.items]; // Erstelle eine Kopie der vorhandenen Artikel im Einkaufswagen
-      const updatedItemIndex = updatedItems.findIndex(
-        (item) => item.id === productId
-      );
-
-      const updatedItem = {
-        ...updatedItems[updatedItemIndex],
-      };
-
-      // Aktualisiere die Menge des Artikels
-      updatedItem.quantity += amount;
-
-      if (updatedItem.quantity <= 0) {
-        // Entferne den Artikel aus dem Einkaufswagen, wenn die Menge <= 0 ist
-        updatedItems.splice(updatedItemIndex, 1);
-      } else {
-        // Andernfalls aktualisiere den Artikel im Einkaufswagen
-        updatedItems[updatedItemIndex] = updatedItem;
-      }
-
-      // Gib den aktualisierten Zustand zurück
-      return {
-        items: updatedItems,
-      };
-    });
+    // ...
   }
 
+  // Kontextwert, der in den Provider eingefügt wird
   const ctxValue = {
     items: shoppingCartState.items,
     addItemToCart: handleAddItemToCart,
-    updateItemQuantity: handleUpdateCartItemQuantity
+    updateItemQuantity: handleUpdateCartItemQuantity,
   };
+
   return (
     <CartContext.Provider value={ctxValue}>
-        {children}
+      {children}
     </CartContext.Provider>
-  )
+  );
 }

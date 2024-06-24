@@ -8,27 +8,22 @@ import { DUMMY_PRODUCTS } from './dummy-products.js';
 import CartContextProvider from './store/shopping-cart-context.jsx';
 
 function App() {
-
-
   return (
-    <CartContextProvider >
+    <CartContextProvider>
       {/* Header-Komponente mit den aktuellen Einkaufswagen-Daten und der Funktion zum Aktualisieren der Artikelmenge */}
-      <Header/>
+      <Header />
       {/* Shop-Komponente */}
       <Shop>
         {/* Iteriere über die Dummy-Produkte und rendere für jedes Produkt eine Product-Komponente */}
         {DUMMY_PRODUCTS.map((product) => (
           <li key={product.id}>
             {/* Übergibt alle Produkteigenschaften (name, price, description, etc.) an die Product-Komponente */}
-            <Product {...product}/>
+            <Product {...product} />
           </li>
         ))}
       </Shop>
     </CartContextProvider>
   );
 }
-
-// This is a test comment to verify commit visibility
-
 
 export default App;

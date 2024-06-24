@@ -6,7 +6,6 @@ export default function Shop({ children }) {
     <section id="shop">
       {/* Überschrift der Shop-Sektion */}
       <h2>Elegant Clothing For Everyone</h2>
-
       {/* Liste der Produkte */}
       <ul id="products">{children}</ul>
     </section>
@@ -15,5 +14,5 @@ export default function Shop({ children }) {
 
 // PropTypes-Validierung
 Shop.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

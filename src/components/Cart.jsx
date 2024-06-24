@@ -1,9 +1,9 @@
-import { useContext } from "react";
-import { CartContext } from "../store/shopping-cart-context.jsx";
+import { useContext } from 'react';
+import { CartContext } from '../store/shopping-cart-context.jsx';
 
 // Definiere die Cart-Komponente
 export default function Cart() {
-  const { items , updateItemQuantity  } = useContext(CartContext);
+  const { items, updateItemQuantity } = useContext(CartContext);
 
   // Berechne den Gesamtpreis der Artikel im Einkaufswagen
   const totalPrice = items.reduce(

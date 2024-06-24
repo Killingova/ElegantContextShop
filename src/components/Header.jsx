@@ -1,5 +1,5 @@
 // Importiere useRef-Hook aus React
-import { useRef , useContext } from 'react';
+import { useRef, useContext } from 'react';
 
 // Importiere die CartModal-Komponente
 import CartModal from './CartModal.jsx';
@@ -9,7 +9,7 @@ import { CartContext } from '../store/shopping-cart-context.jsx';
 export default function Header() {
   // Erstelle eine Referenz für das Modal
   const modal = useRef();
-  const {items} = useContext(CartContext);
+  const { items } = useContext(CartContext);
 
   // Berechne die Anzahl der Artikel im Einkaufswagen
   const cartQuantity = items?.length || 0;
@@ -37,11 +37,7 @@ export default function Header() {
   return (
     <>
       {/* CartModal-Komponente mit Referenz und übergebenen Props */}
-      <CartModal
-        ref={modal}
-        title="Your Cart"
-        actions={modalActions}
-      />
+      <CartModal ref={modal} title="Your Cart" actions={modalActions} />
       {/* Header-Bereich der Seite */}
       <header id="main-header">
         <div id="main-title">
